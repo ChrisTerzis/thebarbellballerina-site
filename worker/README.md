@@ -1,96 +1,67 @@
-# Cloudflare Worker API
+# Cloudflare Worker API + Frontend
 
-TypeScript API that mirrors the PHP backend in `../api/`. Both expose the same routes:
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/auth/login` | Admin login |
-| POST | `/api/auth/logout` | Admin logout |
-| GET | `/api/auth/me` | Current admin session |
-| POST | `/api/early-access` | Waitlist signup (+ Klaviyo) |
-| GET | `/api/admin/early-access` | List signups (auth required) |
-
-Storage uses **Cloudflare D1** (SQLite). Sessions use signed `tbb_session` cookies.
-
-The PHP API is unchanged and still works for local/shared hosting.
+The Worker serves `/api/*` and (in production) the built React app from `../dist` on the **same origin**.
 
 ## Local development
 
-1. Install worker dependencies:
+1. Install dependencies:
 
    ```bash
-   cd worker
    npm install
-   cp .dev.vars.example .dev.vars
+   cd worker && npm install && cd ..
    ```
 
-2. Edit `worker/.dev.vars` with your secrets (match values from root `.env` where applicable).
+2. Ensure `worker/.dev.vars` exists (copy from `.dev.vars.example` and fill in secrets).
 
-3. Apply the D1 schema and seed admin:
+3. Apply D1 schema and seed admin (first time only):
 
    ```bash
-   npm run db:migrate
-   npm run db:seed
+   npm run worker:db:migrate
+   npm run worker:db:seed
    ```
 
-4. Start the worker:
+4. In root `.env`, set:
 
-   ```bash
-   npm run dev
    ```
-
-   Worker listens on **http://127.0.0.1:8787**.
-
-5. From the project root, point Vite at the worker:
-
-   ```bash
-   # In root .env
    VITE_API_PROXY=worker
    ```
 
-   Then run `npm run dev` (frontend) alongside `npm run worker:dev`.
-
-   To use the PHP API instead, omit `VITE_API_PROXY` or set `VITE_API_PROXY=php` and run `npm run server`.
-
-## Deploy to Cloudflare
-
-1. Create a D1 database and update `database_id` in `wrangler.toml`:
+5. Start frontend + Worker together:
 
    ```bash
-   npx wrangler d1 create tbb-website
+   npm run dev:worker
    ```
 
-2. Apply schema and seed on production D1:
+   - Frontend: http://localhost:8080 (Vite)
+   - API: proxied to Worker at http://127.0.0.1:8787
 
-   ```bash
-   npm run db:migrate:remote
-   npm run db:seed:remote
-   ```
+   The frontend already calls relative paths like `/api/early-access` — Vite forwards those to the Worker.
 
-3. Set secrets:
+## Production deploy
 
-   ```bash
-   npx wrangler secret put SESSION_SECRET
-   npx wrangler secret put ADMIN_PASSWORD
-   npx wrangler secret put KLAVIYO_PRIVATE_API_KEY
-   npx wrangler secret put KLAVIYO_EARLY_ACCESS_LIST_ID
-   ```
+Build the SPA, then deploy Worker + static assets:
 
-4. Deploy:
+```bash
+npm run deploy
+```
 
-   ```bash
-   npm run deploy
-   ```
+This runs `vite build` then `wrangler deploy`. The Worker config uses:
 
-5. Route `/api/*` to this worker (Workers dashboard → Triggers, or Cloudflare Pages Functions / `_routes.json`).
+- `[assets]` → `dist/` (SPA with client-side routing)
+- `run_worker_first = ["/api/*"]` → API hits the Worker; everything else serves static files
 
-   Set `SESSION_COOKIE_SECURE=true` in `wrangler.toml` `[vars]` when serving over HTTPS.
+Set production secrets once:
 
-## Root scripts
+```bash
+cd worker
+npx wrangler secret put SESSION_SECRET
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put KLAVIYO_PRIVATE_API_KEY
+npx wrangler secret put KLAVIYO_EARLY_ACCESS_LIST_ID
+npm run db:migrate:remote
+npm run db:seed:remote
+```
 
-From the project root:
+## PHP API
 
-- `npm run worker:dev` — local Worker API
-- `npm run worker:deploy` — deploy Worker
-- `npm run worker:db:migrate` — local D1 schema
-- `npm run worker:db:seed` — upsert admin in local D1
+The PHP API in `../api/` is unchanged. To use it locally instead, set `VITE_API_PROXY=php` (or remove it) and run `npm run server`.

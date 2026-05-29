@@ -2,18 +2,25 @@ name = "tbb-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
-# Create with: npx wrangler d1 create tbb-website
-# Then replace database_id below with the ID from that command.
+# Production: `npm run build` then `npm run deploy` from project root.
+# Serves the SPA from ../dist and routes /api/* to this Worker (same origin).
+[assets]
+directory = "../dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
 [[d1_databases]]
 binding = "DB"
-database_name = "tbb-website"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_name = "tbb-db"
+database_id = "e9da475c-f130-4880-95be-ca2a5ba75693"
 migrations_dir = "migrations"
 
 [vars]
 ADMIN_EMAIL = "barbell@ballerina.com"
 KLAVIYO_API_REVISION = "2025-04-15"
+# false for local http dev; set true before production deploy (HTTPS).
 SESSION_COOKIE_SECURE = "false"
 
-# Set secrets for production (wrangler secret put …) or copy .dev.vars.example → .dev.vars locally:
+# Secrets via worker/.dev.vars (local) or `wrangler secret put` (production):
 # SESSION_SECRET, ADMIN_PASSWORD, KLAVIYO_PRIVATE_API_KEY, KLAVIYO_EARLY_ACCESS_LIST_ID

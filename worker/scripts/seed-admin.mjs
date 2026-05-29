@@ -39,7 +39,7 @@ const sqlPath = join(__dirname, '..', '.seed-admin.sql');
 writeFileSync(sqlPath, sql, 'utf8');
 
 try {
-  execSync(`npx wrangler d1 execute tbb-website ${flag} --file=.seed-admin.sql`, {
+  execSync(`npx wrangler d1 execute tbb-db ${flag} --file=.seed-admin.sql`, {
     stdio: 'inherit',
     cwd: join(__dirname, '..'),
   });
