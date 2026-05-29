@@ -2,13 +2,12 @@ name = "tbb-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
-# Production: `npm run build` then `npm run deploy` from project root.
-# Serves the SPA from ../dist and routes /api/* to this Worker (same origin).
+# Worker runs first for every request; non-/api/* paths fall through to static assets.
 [assets]
 directory = "../dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
-run_worker_first = ["/api/*"]
+run_worker_first = true
 
 [[d1_databases]]
 binding = "DB"
@@ -19,8 +18,8 @@ migrations_dir = "migrations"
 [vars]
 ADMIN_EMAIL = "barbell@ballerina.com"
 KLAVIYO_API_REVISION = "2025-04-15"
-# false for local http dev; set true before production deploy (HTTPS).
-SESSION_COOKIE_SECURE = "false"
+# true on HTTPS production; false only for local http dev.
+SESSION_COOKIE_SECURE = "true"
 
 # Secrets via worker/.dev.vars (local) or `wrangler secret put` (production):
 # SESSION_SECRET, ADMIN_PASSWORD, KLAVIYO_PRIVATE_API_KEY, KLAVIYO_EARLY_ACCESS_LIST_ID
