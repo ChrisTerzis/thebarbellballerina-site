@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import type { AdminRow, Env } from '../types.ts';
+import type { AdminRow, Env } from '../types';
 
 let schemaReady: Promise<void> | null = null;
 

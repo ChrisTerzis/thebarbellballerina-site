@@ -1,7 +1,7 @@
-import type { Env } from '../types.ts';
-import { findAdminByEmail, verifyPassword } from '../lib/db.ts';
-import { jsonResponse, readJsonBody } from '../lib/response.ts';
-import { clearSessionHeaders, createSessionToken, readSession, sessionHeaders } from '../lib/session.ts';
+import type { Env } from '../types';
+import { findAdminByEmail, verifyPassword } from '../lib/db';
+import { jsonResponse, readJsonBody } from '../lib/response';
+import { clearSessionHeaders, createSessionToken, readSession, sessionHeaders } from '../lib/session';
 
 export async function handleLogin(request: Request, env: Env): Promise<Response> {
   const body = await readJsonBody<{ email?: string; password?: string }>(request);

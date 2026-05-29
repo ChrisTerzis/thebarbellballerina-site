@@ -1,7 +1,7 @@
-import type { Env } from '../types.ts';
-import { upsertEarlyAccessSignup } from '../lib/db.ts';
-import { klaviyoSubscribeEarlyAccessProfile } from '../lib/klaviyo.ts';
-import { isValidEmail, jsonResponse, readJsonBody } from '../lib/response.ts';
+import type { Env } from '../types';
+import { upsertEarlyAccessSignup } from '../lib/db';
+import { klaviyoSubscribeEarlyAccessProfile } from '../lib/klaviyo';
+import { isValidEmail, jsonResponse, readJsonBody } from '../lib/response';
 
 export async function handleEarlyAccess(request: Request, env: Env): Promise<Response> {
   const body = await readJsonBody<{ email?: string; first_name?: string }>(request);

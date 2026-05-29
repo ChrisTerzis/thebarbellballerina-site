@@ -1,4 +1,4 @@
-import type { Env, SessionPayload } from '../types.ts';
+import type { Env, SessionPayload } from '../types';
 
 const SESSION_COOKIE = 'tbb_session';
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;

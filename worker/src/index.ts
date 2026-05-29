@@ -1,8 +1,8 @@
-import type { Env } from './types.ts';
-import { handleAdminEarlyAccess } from './routes/admin.ts';
-import { handleLogin, handleLogout, handleMe } from './routes/auth.ts';
-import { handleEarlyAccess } from './routes/early-access.ts';
-import { jsonResponse } from './lib/response.ts';
+import type { Env } from './types';
+import { handleAdminEarlyAccess } from './routes/admin';
+import { handleLogin, handleLogout, handleMe } from './routes/auth';
+import { handleEarlyAccess } from './routes/early-access';
+import { jsonResponse } from './lib/response';
 
 function getPath(request: Request): string {
   return new URL(request.url).pathname;
