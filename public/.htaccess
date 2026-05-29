@@ -1,0 +1,22 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Site at domain root (https://example.com/). For a subfolder install, set:
+  # RewriteBase /your-subfolder/
+
+  RewriteBase /
+
+  # PHP API — upload the project `api/` folder next to `index.html` on the server.
+  RewriteCond %{REQUEST_URI} ^/api/
+  RewriteRule .* api/router.php [L]
+
+  # Real files and folders (built JS/CSS, robots.txt, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # SPA client routes (/admin/login, /admin, …)
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+DirectoryIndex index.html
