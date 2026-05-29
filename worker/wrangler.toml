@@ -20,6 +20,8 @@ ADMIN_EMAIL = "barbell@ballerina.com"
 KLAVIYO_API_REVISION = "2025-04-15"
 # true on HTTPS production; false only for local http dev.
 SESSION_COOKIE_SECURE = "true"
+SESSION_SAME_SITE = "Lax"
+CORS_ALLOWED_ORIGINS = "http://localhost:8080"
 
 # Secrets via worker/.dev.vars (local) or `wrangler secret put` (production):
 # SESSION_SECRET, ADMIN_PASSWORD, KLAVIYO_PRIVATE_API_KEY, KLAVIYO_EARLY_ACCESS_LIST_ID

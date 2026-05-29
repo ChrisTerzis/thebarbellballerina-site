@@ -1,67 +1,72 @@
-# Cloudflare Worker API + Frontend
+# Cloudflare Worker API
 
-The Worker serves `/api/*` and (in production) the built React app from `../dist` on the **same origin**.
+## Why login returned 405
 
-## Local development
+If the static site is on **Hostinger/Apache** and the Worker is deployed separately, `POST https://thebarbellballerina.com/api/...` hits the **static host**, not the Worker → **405 Method Not Allowed**.
 
-1. Install dependencies:
+The frontend must call the Worker URL directly (cross-origin), with CORS enabled on the Worker.
 
-   ```bash
-   npm install
-   cd worker && npm install && cd ..
-   ```
+## Split hosting (current setup)
 
-2. Ensure `worker/.dev.vars` exists (copy from `.dev.vars.example` and fill in secrets).
+**Static site:** thebarbellballerina.com (upload `dist/` to Hostinger)  
+**API:** Cloudflare Worker (`wrangler.api.toml`)
 
-3. Apply D1 schema and seed admin (first time only):
+### 1. Deploy the API Worker
 
-   ```bash
-   npm run worker:db:migrate
-   npm run worker:db:seed
-   ```
+```bash
+cd worker
+npm install
+npx wrangler deploy -c wrangler.api.toml
+```
 
-4. In root `.env`, set:
+Set production secrets (once):
 
-   ```
-   VITE_API_PROXY=worker
-   ```
+```bash
+npx wrangler secret put SESSION_SECRET -c wrangler.api.toml
+npx wrangler secret put ADMIN_PASSWORD -c wrangler.api.toml
+npx wrangler secret put KLAVIYO_PRIVATE_API_KEY -c wrangler.api.toml
+npx wrangler secret put KLAVIYO_EARLY_ACCESS_LIST_ID -c wrangler.api.toml
+npm run db:migrate:remote
+npm run db:seed:remote
+```
 
-5. Start frontend + Worker together:
+Note the deploy URL (e.g. `https://tbb-api.<your-subdomain>.workers.dev`).
 
-   ```bash
-   npm run dev:worker
-   ```
+### 2. Build the frontend with the Worker URL
 
-   - Frontend: http://localhost:8080 (Vite)
-   - API: proxied to Worker at http://127.0.0.1:8787
+Edit `.env.production`:
 
-   The frontend already calls relative paths like `/api/early-access` — Vite forwards those to the Worker.
+```
+VITE_API_BASE_URL=https://tbb-api.YOUR-SUBDOMAIN.workers.dev
+```
 
-## Production deploy
+Then from project root:
 
-Build the SPA, then deploy Worker + static assets:
+```bash
+npm run deploy:hosting
+```
+
+Upload the new `dist/` folder to Hostinger (replace existing files).
+
+### 3. Local development
+
+```bash
+# worker/.dev.vars — SESSION_SAME_SITE=Lax
+npm run dev:worker
+```
+
+Vite proxies `/api` to the Worker; leave `VITE_API_BASE_URL` unset in `.env`.
+
+## Unified Cloudflare deploy (optional)
+
+If the **custom domain** points entirely to Cloudflare Worker (not Hostinger):
 
 ```bash
 npm run deploy
 ```
 
-This runs `vite build` then `wrangler deploy`. The Worker config uses:
-
-- `[assets]` → `dist/` (SPA with client-side routing)
-- `run_worker_first = ["/api/*"]` → API hits the Worker; everything else serves static files
-
-Set production secrets once:
-
-```bash
-cd worker
-npx wrangler secret put SESSION_SECRET
-npx wrangler secret put ADMIN_PASSWORD
-npx wrangler secret put KLAVIYO_PRIVATE_API_KEY
-npx wrangler secret put KLAVIYO_EARLY_ACCESS_LIST_ID
-npm run db:migrate:remote
-npm run db:seed:remote
-```
+Uses `wrangler.toml` (Worker + `dist/` assets, same origin). No `VITE_API_BASE_URL` needed.
 
 ## PHP API
 
-The PHP API in `../api/` is unchanged. To use it locally instead, set `VITE_API_PROXY=php` (or remove it) and run `npm run server`.
+The PHP API in `../api/` is unchanged.

@@ -1,10 +1,12 @@
 export interface Env {
   DB: D1Database;
-  ASSETS: Fetcher;
+  ASSETS?: Fetcher;
   ADMIN_EMAIL: string;
   ADMIN_PASSWORD: string;
   SESSION_SECRET: string;
   SESSION_COOKIE_SECURE?: string;
+  SESSION_SAME_SITE?: string;
+  CORS_ALLOWED_ORIGINS?: string;
   KLAVIYO_PRIVATE_API_KEY?: string;
   KLAVIYO_EARLY_ACCESS_LIST_ID?: string;
   KLAVIYO_API_REVISION?: string;

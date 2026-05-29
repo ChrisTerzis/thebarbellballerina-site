@@ -49,26 +49,34 @@ function cookieSecure(env: Env): boolean {
   return env.SESSION_COOKIE_SECURE === '1' || env.SESSION_COOKIE_SECURE === 'true';
 }
 
-function sessionCookieHeader(token: string, env: Env): string {
+function sameSiteValue(env: Env): string {
+  const value = env.SESSION_SAME_SITE?.trim();
+  if (value === 'None' || value === 'Strict' || value === 'Lax') {
+    return value;
+  }
+  return 'Lax';
+}
+
+function sessionCookieParts(token: string | null, env: Env, maxAge: number): string[] {
   const parts = [
-    `${SESSION_COOKIE}=${token}`,
+    token === null ? `${SESSION_COOKIE}=` : `${SESSION_COOKIE}=${token}`,
     'Path=/',
     'HttpOnly',
-    'SameSite=Lax',
-    `Max-Age=${SESSION_TTL_SECONDS}`,
+    `SameSite=${sameSiteValue(env)}`,
+    `Max-Age=${maxAge}`,
   ];
-  if (cookieSecure(env)) {
+  if (cookieSecure(env) || sameSiteValue(env) === 'None') {
     parts.push('Secure');
   }
-  return parts.join('; ');
+  return parts;
+}
+
+function sessionCookieHeader(token: string, env: Env): string {
+  return sessionCookieParts(token, env, SESSION_TTL_SECONDS).join('; ');
 }
 
 function clearSessionCookieHeader(env: Env): string {
-  const parts = [`${SESSION_COOKIE}=`, 'Path=/', 'HttpOnly', 'SameSite=Lax', 'Max-Age=0'];
-  if (cookieSecure(env)) {
-    parts.push('Secure');
-  }
-  return parts.join('; ');
+  return sessionCookieParts(null, env, 0).join('; ');
 }
 
 export async function createSessionToken(payload: Omit<SessionPayload, 'exp'>, env: Env): Promise<string> {

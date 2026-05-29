@@ -2,30 +2,25 @@ import type { Env } from './types';
 import { handleAdminEarlyAccess } from './routes/admin';
 import { handleLogin, handleLogout, handleMe } from './routes/auth';
 import { handleEarlyAccess } from './routes/early-access';
+import { corsPreflightResponse, withCors } from './lib/cors';
 import { jsonResponse } from './lib/response';
 
 function getPath(request: Request): string {
   return new URL(request.url).pathname;
 }
 
-async function handleApi(request: Request, env: Env): Promise<Response | null> {
+async function handleApi(request: Request, env: Env): Promise<Response> {
+  const preflight = corsPreflightResponse(request, env);
+  if (preflight) {
+    return preflight;
+  }
+
   if (!env.SESSION_SECRET) {
     return jsonResponse({ message: 'Server misconfigured: SESSION_SECRET is required.' }, 500);
   }
 
   const path = getPath(request);
   const method = request.method;
-
-  if (method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-    });
-  }
 
   try {
     if (path === '/api/auth/login' && method === 'POST') {
@@ -61,11 +56,13 @@ export default {
 
     if (path.startsWith('/api/')) {
       const apiResponse = await handleApi(request, env);
-      if (apiResponse) {
-        return apiResponse;
-      }
+      return withCors(request, apiResponse, env);
     }
 
-    return env.ASSETS.fetch(request);
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
+
+    return withCors(request, jsonResponse({ message: 'Not found' }, 404), env);
   },
 };
