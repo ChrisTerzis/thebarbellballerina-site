@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { X, Check } from 'lucide-react';
+import { apiFetch } from '@/lib/api';
 
 interface WaitlistModalProps {
   open: boolean;
@@ -51,7 +52,7 @@ export default function WaitlistModal({ open, onClose }: WaitlistModalProps) {
     }
     setSubmitting(true);
     try {
-      const res = await fetch('/api/early-access', {
+      const res = await apiFetch('/api/early-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ first_name: trimmedName, email: trimmed }),

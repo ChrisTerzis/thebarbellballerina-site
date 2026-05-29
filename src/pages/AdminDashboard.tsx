@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +33,7 @@ export default function AdminDashboard() {
   const loadSignups = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/early-access", { credentials: "include" });
+      const res = await apiFetch("/api/admin/early-access");
       if (res.status === 401) {
         await logout();
         navigate("/admin/login", { replace: true });
