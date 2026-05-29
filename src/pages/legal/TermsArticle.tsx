@@ -1,7 +1,7 @@
 import DocSection from './DocSection';
 import LlcName from './LlcName';
 
-const SITE_URL = 'https://www.thebarbellballerina.com/';
+const SITE_URL = 'https://thebarbellballerina.com';
 
 export default function TermsArticle() {
   return (
@@ -10,7 +10,7 @@ export default function TermsArticle() {
         <div className="space-y-5 break-words font-serif text-[17px] leading-[1.75] text-[#1a1a1a] [&_a]:break-all [&_a]:font-inherit [&_a]:text-inherit [&_a]:no-underline hover:[&_a]:opacity-80">
           <p>
             Please read these Terms &amp; Conditions carefully and in their entirety before using{' '}
-            <a href={SITE_URL}>https://www.thebarbellballerina.com/</a> (hereinafter referred to as the &ldquo;Site&rdquo;). The
+            <a href={SITE_URL}>https://thebarbellballerina.com</a> (hereinafter referred to as the &ldquo;Site&rdquo;). The
             Site and its content are owned by <LlcName />.
           </p>
 
@@ -41,14 +41,14 @@ export default function TermsArticle() {
       <DocSection id="terms-definitions" index={1} title="Definitions">
         <p>
           &ldquo;Company&rdquo;, &ldquo;We&rdquo;, &ldquo;I&rdquo;, &ldquo;Our&rdquo;, or &ldquo;Us&rdquo; means{' '}
-          <LlcName /> and our website, <a href={SITE_URL}>https://www.thebarbellballerina.com/</a>
+          <LlcName /> and our website, <a href={SITE_URL}>https://thebarbellballerina.com</a>
         </p>
         <p>
           &ldquo;Content&rdquo; means any and all written, visual, video, or audio information contained on the Site,
           including, but not limited to, any and all emails received from Lili Pfeifer, <LlcName />, and/or{' '}
-          <a href={SITE_URL}>https://www.thebarbellballerina.com/</a>, and any and all written or downloadable material
+          <a href={SITE_URL}>https://thebarbellballerina.com</a>, and any and all written or downloadable material
           purchased, viewed, or otherwise offered by <LlcName /> and/or on{' '}
-          <a href={SITE_URL}>https://www.thebarbellballerina.com/</a>, including, but not limited to, blog posts, graphics,
+          <a href={SITE_URL}>https://thebarbellballerina.com</a>, including, but not limited to, blog posts, graphics,
           newsletters, designs, documents, information, templates and materials.
         </p>
         <p>
@@ -57,13 +57,13 @@ export default function TermsArticle() {
           personal information includes, among other things, your name, address, email address, telephone number, etc.
         </p>
         <p>
-          &ldquo;Site, Courses, Services, and/or Products&rdquo; means <a href={SITE_URL}>https://www.thebarbellballerina.com/</a>
+          &ldquo;Site, Courses, Services, and/or Products&rdquo; means <a href={SITE_URL}>https://thebarbellballerina.com</a>
           , Content (as defined herein), email list/newsletters, social media posts, blog posts, courses, coaching services,
           guides, eBooks, forms, worksheets, workbooks, webinars, website materials, programs, and/or templates available on
           the Site.
         </p>
         <p>
-          &ldquo;Site&rdquo; means <a href={SITE_URL}>https://www.thebarbellballerina.com/</a> and any and all of its
+          &ldquo;Site&rdquo; means <a href={SITE_URL}>https://thebarbellballerina.com</a> and any and all of its
           associated pages, tabs, landing pages, forms, or sub-pages.
         </p>
         <p>&ldquo;You&rdquo; or &ldquo;Your&rdquo; means the user, customer, or viewer of the Site.</p>
@@ -396,7 +396,7 @@ export default function TermsArticle() {
       <DocSection id="terms-contact" index={29} title="Contact">
         <p>If you have any questions or concerns regarding these Terms &amp; Conditions, you may contact us using the following information:</p>
         <p>
-          Website: <a href={SITE_URL}>https://www.thebarbellballerina.com/</a>
+          Website: <a href={SITE_URL}>https://thebarbellballerina.com</a>
           <br />
           Email: Lili at <a href="mailto:support@thebarbellballerina.com">support@thebarbellballerina.com</a>
         </p>

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 .env
+worker/.dev.vars
+worker/.wrangler
+worker/.seed-admin.sql
 
 # Editor directories and files
 .vscode/*

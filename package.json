@@ -11,6 +11,10 @@
     "preview": "vite preview",
     "server": "php -S 127.0.0.1:3001 api/router.php",
     "db:seed": "php api/seed.php",
+    "worker:dev": "npm run dev --prefix worker",
+    "worker:deploy": "npm run deploy --prefix worker",
+    "worker:db:migrate": "npm run db:migrate --prefix worker",
+    "worker:db:seed": "npm run db:seed --prefix worker",
     "test": "vitest run",
     "test:watch": "vitest"
   },

@@ -1,0 +1,4 @@
+SESSION_SECRET=change-me-to-a-long-random-string
+ADMIN_PASSWORD=Admin123
+KLAVIYO_PRIVATE_API_KEY=pk_your_key_here
+KLAVIYO_EARLY_ACCESS_LIST_ID=your_list_id
