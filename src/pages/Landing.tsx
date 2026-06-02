@@ -867,7 +867,7 @@ export default function Landing() {
             </div>
             {membershipBilling === 'annual' ? (
               <p className="text-center font-display text-base tracking-[0.14em] text-[#BB8966] md:text-lg">
-                2 Months Free!
+                2 Months Free
               </p>
             ) : null}
           </div>
@@ -933,7 +933,7 @@ export default function Landing() {
           </div>
 
           <p className="mx-auto mt-14 max-w-3xl text-center text-[10px] uppercase tracking-[0.28em] text-white/45 md:mt-16 md:text-[11px]">
-            EASY CANCELLATION BEFORE RENEWAL • 100% LILI'S METHOD • 0% GENERIC FITNESS
+            Change plans or cancel anytime • 100% Lili’s method • 0% generic fitness
           </p>
         </div>
       </section>
