@@ -17,7 +17,7 @@ export const TERMS_TOC: LegalTocItem[] = [
   { id: 'terms-personal-use', label: 'Personal Use Only & Prohibited Conduct' },
   { id: 'terms-sharing', label: 'Sharing the Site & Its Content' },
   { id: 'terms-no-claims', label: 'No Claims Made Regarding Results' },
-  { id: 'terms-no-warranties', label: 'No Warranties, Guarantees, or Representations' },
+  { id: 'terms-no-warranties', label: 'Disclaimer - No Warranties, Guarantees, or Representations Are Being Made' },
   { id: 'terms-release', label: 'Your Release of Us' },
   { id: 'terms-errors', label: 'Errors & Omissions' },
   { id: 'terms-refund', label: 'Our Refund Policy' },
