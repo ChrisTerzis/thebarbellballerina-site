@@ -18,21 +18,24 @@ if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+$isNewSignup = true;
+
+// DB insert is best-effort — if MySQL is unavailable we still subscribe via Klaviyo
 try {
     $stmt = pdo()->prepare(
         'INSERT INTO early_access_signups (email, first_name) VALUES (?, ?) ON DUPLICATE KEY UPDATE first_name = VALUES(first_name)'
     );
     $stmt->execute([$email, $firstName]);
     // MySQL: 1 = new row inserted, 2 = existing row updated, 0 = no change
-    $affected = $stmt->rowCount();
-    $isNewSignup = $affected === 1;
-    try {
-        klaviyo_subscribe_early_access_profile($email, $firstName, $isNewSignup);
-    } catch (Throwable $k) {
-        error_log('Klaviyo early access: ' . $k->getMessage());
-    }
-    jsonResponse(['ok' => true]);
+    $isNewSignup = $stmt->rowCount() === 1;
 } catch (Throwable $e) {
-    error_log((string) $e);
-    jsonResponse(['message' => 'Something went wrong. Please try again.'], 500);
+    error_log('DB early access (non-fatal): ' . $e->getMessage());
 }
+
+try {
+    klaviyo_subscribe_early_access_profile($email, $firstName, $isNewSignup);
+} catch (Throwable $k) {
+    error_log('Klaviyo early access: ' . $k->getMessage());
+}
+
+jsonResponse(['ok' => true]);

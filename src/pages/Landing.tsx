@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Check, X, Dumbbell, LineChart, CalendarDays, Sparkles, ClipboardList, Smartphone, TrendingUp, Plus, Minus } from 'lucide-react';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
+import CommunityMapModal from '@/components/CommunityMapModal';
 import imgStrength from '@/assets/visual-strength.jpg';
 import imgArabesque from '@/assets/visual-arabesque.jpg';
 import imgArms from '@/assets/The Barbell Ballerina by Mycah Bain Photography-299 (1).jpg';
@@ -250,10 +251,10 @@ const MEMBERSHIP_TIERS: readonly MembershipTier[] = [
     subtitle: 'Begin Building Strength.',
     featured: false,
     features: [
-      'Limited program access',
+      'Core program access',
       'Basic logging and progress',
       'Community read-only access',
-      'Limited new features',
+      'Select feature updates',
     ],
     ctaVariant: 'outline' as const,
     billing: {
@@ -297,6 +298,7 @@ const MEMBERSHIP_TIERS: readonly MembershipTier[] = [
 
 export default function Landing() {
   const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [membershipBilling, setMembershipBilling] = useState<'monthly' | 'annual'>('annual');
   const openWaitlist = () => setWaitlistOpen(true);
@@ -694,9 +696,18 @@ export default function Landing() {
               <p className="text-xs uppercase tracking-[0.3em] text-[#BB8966] mb-6">Chapter 06 / Results</p>
               <h2 className="font-serif text-5xl md:text-7xl tracking-tight-brand">Built in the gym.<br /><span className="italic font-light">Proven onstage.</span></h2>
             </div>
-            <p className="text-white/55 text-sm max-w-sm leading-relaxed">
-              Real results from ballet dancers applying structured strength training to their performance.
-            </p>
+            <div className="flex flex-col gap-5">
+              <button
+                type="button"
+                onClick={() => setMapOpen(true)}
+                className="inline-flex items-center gap-2 self-start rounded-md border border-white/35 bg-transparent px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-white transition-colors hover:bg-white/[0.06]"
+              >
+                View TBB Around The World
+              </button>
+              <p className="text-white/55 text-sm max-w-sm leading-relaxed">
+                Real results from ballet dancers applying structured strength training to their performance.
+              </p>
+            </div>
           </motion.div>
 
           <div className="grid md:grid-cols-6 gap-8 md:gap-10">
@@ -865,11 +876,6 @@ export default function Landing() {
                 Annual
               </button>
             </div>
-            {membershipBilling === 'annual' ? (
-              <p className="text-center font-display text-base tracking-[0.14em] text-[#BB8966] md:text-lg">
-                2 Months Free
-              </p>
-            ) : null}
           </div>
 
           <div className="relative mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 md:items-stretch md:gap-x-12 md:gap-y-0 md:overflow-visible lg:gap-x-16 xl:gap-x-20">
@@ -932,7 +938,11 @@ export default function Landing() {
             })}
           </div>
 
-          <p className="mx-auto mt-14 max-w-3xl text-center text-[10px] uppercase tracking-[0.28em] text-white/45 md:mt-16 md:text-[11px]">
+          <p className="mx-auto mt-10 max-w-3xl text-center text-xs uppercase tracking-[0.12em] text-white/70 md:text-sm">
+            Prices shown are post-launch. Waitlist members pay less.
+          </p>
+
+          <p className="mx-auto mt-5 max-w-3xl text-center text-[10px] uppercase tracking-[0.28em] text-white/45 md:text-[11px]">
             Change plans or cancel anytime • 100% Lili’s method • 0% generic fitness
           </p>
         </div>
@@ -1002,6 +1012,8 @@ export default function Landing() {
       </section>
 
       <SiteFooter />
+
+      <CommunityMapModal open={mapOpen} onClose={() => setMapOpen(false)} />
     </div>
   );
 }

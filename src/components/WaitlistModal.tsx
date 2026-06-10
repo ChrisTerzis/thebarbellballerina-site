@@ -4,6 +4,9 @@ import { toast } from 'sonner';
 import { X, Check } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 
+// Update this URL once the enrollment page is deployed
+const ENROLLMENT_URL = 'https://enrollment.thebarbellballerina.com';
+
 interface WaitlistModalProps {
   open: boolean;
   onClose: () => void;
@@ -61,7 +64,7 @@ export default function WaitlistModal({ open, onClose }: WaitlistModalProps) {
         const err = (await res.json().catch(() => ({}))) as { message?: string };
         throw new Error(err.message ?? 'Could not join the list');
       }
-      setSubmitted(true);
+      window.location.href = ENROLLMENT_URL;
     } catch (err) {
       const message =
         err instanceof TypeError
@@ -107,7 +110,7 @@ export default function WaitlistModal({ open, onClose }: WaitlistModalProps) {
                 <p className="text-[10px] uppercase tracking-[0.3em] text-[#BB8966] mb-4">Early Access</p>
                 <h3 className="font-serif text-3xl md:text-4xl leading-tight mb-3">Be first to train</h3>
                 <p className="text-sm text-black/60 leading-relaxed mb-8">
-                  Join early access and be the first to experience The Barbell Ballerina.
+                  Waitlist members get founding member pricing not available publicly.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <input
