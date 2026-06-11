@@ -64,7 +64,7 @@ export default function WaitlistModal({ open, onClose }: WaitlistModalProps) {
         const err = (await res.json().catch(() => ({}))) as { message?: string };
         throw new Error(err.message ?? 'Could not join the list');
       }
-      window.location.href = ENROLLMENT_URL;
+      setSubmitted(true);
     } catch (err) {
       const message =
         err instanceof TypeError
