@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, X, Dumbbell, LineChart, CalendarDays, Sparkles, ClipboardList, Smartphone, TrendingUp, Plus, Minus } from 'lucide-react';
+import { ArrowRight, Check, X, Dumbbell, LineChart, CalendarDays, Sparkles, ClipboardList, Smartphone, TrendingUp, Plus, Minus, Globe } from 'lucide-react';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
 import CommunityMapModal from '@/components/CommunityMapModal';
@@ -700,9 +700,17 @@ export default function Landing() {
               <button
                 type="button"
                 onClick={() => setMapOpen(true)}
-                className="inline-flex items-center gap-2 self-start rounded-md border border-white/35 bg-transparent px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-white transition-colors hover:bg-white/[0.06]"
+                className="group inline-flex items-center self-start rounded-xl overflow-hidden transition-all"
               >
-                View TBB Around The World
+                <span className="flex self-stretch items-center justify-center bg-[#BB8966] px-5">
+                  <Globe className="h-5 w-5 text-[#0A0A0A]" strokeWidth={1.75} />
+                </span>
+                <span className="relative flex items-center whitespace-nowrap overflow-hidden bg-[#1A1714] px-6 py-4 text-xs font-bold uppercase tracking-[0.22em]">
+                  <span className="absolute inset-y-0 left-0 w-0 bg-[#BB8966] transition-all duration-500 ease-out group-hover:w-full" />
+                  <span className="relative text-white transition-colors duration-300 group-hover:text-[#0A0A0A]">
+                    View TBB Around The World
+                  </span>
+                </span>
               </button>
               <p className="text-white/55 text-sm max-w-sm leading-relaxed">
                 Real results from ballet dancers applying structured strength training to their performance.
